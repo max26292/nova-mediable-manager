@@ -10,17 +10,20 @@ use Intervention\Image\ImageManagerStatic as Image;
 
 class MediableController
 {
-
+    protected $model;
     public function __construct()
     {
-        JsonResource::withoutWrapping();
+    JsonResource::withoutWrapping();
+    $this->model = app(config('nova-mediable-manager.modal'));
     }
 
     public function index()
     {
         $filter = $this->getItemFilters();
-
-        $data = Media::orderBy('created_at', 'desc')
+        /**
+         * var $modal = Media;
+         */
+        $data = $this->model::orderBy('created_at', 'desc')
                     ->when($filter['name'], function ($query, $name) {
                         $query->where('name', 'like', '%'.$name.'%');
                     })
@@ -34,7 +37,7 @@ class MediableController
 
     public function stats($disk = null, $type = null)
     {
-        return Media::all()->sum('size'); //17566633 return item count, total size grouped
+        return $this->model::all()->sum('size'); //17566633 return item count, total size grouped
     }
 
     public function upload()
@@ -102,7 +105,7 @@ class MediableController
 
     public function delete($id)
     {
-        return Media::findOrFail($id)->delete();
+        return $this->model::findOrFail($id)->delete();
     }
 
     public function mediable()
@@ -123,7 +126,7 @@ class MediableController
     public function attach($id)
     {
         $mediable = $this->getMediable();
-        $media = new Media;
+        $media = new $this->model;
         $media->id = $id;
 
         $collection = request()->get('collection');
@@ -140,7 +143,7 @@ class MediableController
     public function detach($id)
     {
         $mediable = $this->getMediable();
-        $media = new Media;
+        $media = new $this->model;
         $media->id = $id;
 
         $collection = request()->get('collection');
