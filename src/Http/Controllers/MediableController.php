@@ -68,7 +68,7 @@ class MediableController
 
         $config = config('nova-mediable-manager.conversions');
 
-        $previewDir = $item->getKey().'/'.'conversions/preview/';
+        $previewDir = $item->getDirectory().'/'.'conversions/preview/';
 
         if ($item->filesystem()->exists($previewDir)) {
             // conversion already exist redo ?!?
