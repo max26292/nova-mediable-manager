@@ -7,13 +7,13 @@ use Laravel\Nova\Fields\Field;
 use NaskaIt\NovaMediableManager\Models\MediaUploader;
 use NaskaIt\NovaMediableManager\Models\Media;
 use NaskaIt\NovaMediableManager\Http\Resources\Media as MediaResource;
-
+use Illuminate\Support\Facades\App;
 class Mediable extends Field
 {
     public $flexible = false;
     public $flexibleSuffix = null;
     public $single = false;
-    protected $model
+    protected $model;
     /**
      * The field's component.
      *
@@ -23,7 +23,7 @@ class Mediable extends Field
 
     public function __construct($name, $attribute = null, callable $resolveCallback = null)
     {
-        $this->model= app(config('nova-mediable-manager.modal'));
+        $this->model= App::make(config('nova-mediable-manager.model'));
         parent::__construct($name, $attribute, $resolveCallback);
 
         \Log::info('Mediable Construct');

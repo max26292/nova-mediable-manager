@@ -7,14 +7,14 @@ use NaskaIt\NovaMediableManager\MediaUploader;
 use Illuminate\Http\Resources\Json\JsonResource;
 use NaskaIt\NovaMediableManager\Http\Resources\Media as MediaResource;
 use Intervention\Image\ImageManagerStatic as Image;
-
+use Illuminate\Support\Facades\App;
 class MediableController
 {
     protected $model;
     public function __construct()
     {
-    JsonResource::withoutWrapping();
-    $this->model = app(config('nova-mediable-manager.modal'));
+        JsonResource::withoutWrapping();
+        $this->model = App::make(config('nova-mediable-manager.model'));
     }
 
     public function index()
